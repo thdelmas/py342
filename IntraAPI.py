@@ -10,6 +10,7 @@ class intraAPI:
 
 	def __init__(self, client_id, client_secret, campus_id, scopes="", rate_limit=1):
 		self.__token = oauth.getToken(client_id, client_secret, rate_limit)
+		print(self.__token)
 		self.rate_limit = rate_limit
 		self.delay = 1 / rate_limit
 		self.campus_id = campus_id
@@ -37,12 +38,6 @@ class intraAPI:
 	def closeConnection(self):
 		oauth.revokeToken(self.__token, self.rate_limit)
 
-	def getCampusUsers(self):
-		users = []
-		r = self.get("/v2/campus/" + str(self.campus_id) + "/users/")
-		jsObj = json.loads(r.content.decode("utf-8"))
-		return jsObj
-
 	def getPrimaryCampusUsers(self):
 		users = []
 		jsObj = None
@@ -59,6 +54,7 @@ class intraAPI:
 		int(r.headers['X-Per-Page']) * page <= int(r.headers['X-Total']):
 			params['page'] = str(page)
 			r = self.get("/v2/users", headers=headers, params=params)
+			print(r)
 			jsObj = json.loads(r.content.decode("utf-8"))
 			for i in jsObj:
 				users.append(i)
