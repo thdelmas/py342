@@ -357,3 +357,135 @@ class intraAPI:
 				print(r)
 			r = self.patch("/v2/cursus_users/" + str(cursusUser_id), headers=headers, params=params, json=jsdata)
 			print(r)
+
+	def getLogin(self, user_id):
+		headers = {
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + str(self.__token),
+		}
+		params = {}
+		r = self.get("/v2/users/" + str(user_id), headers=headers, params=params)
+		jsObj = None
+		jsObj = json.loads(r.content.decode("utf-8"))
+		return jsObj['login']
+
+	def getUserId(self, login):
+		headers = {
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + str(self.__token),
+		}
+		params = {}
+		r = self.get("/v2/users/" + login, headers=headers, params=params)
+		jsObj = None
+		jsObj = json.loads(r.content.decode("utf-8"))
+		return jsObj['id']
+
+	def getQuestsUsers(self, login):
+		quests_users = []
+		jsObj = None
+		page = 1
+		headers = {
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + str(self.__token),
+		}
+		params = {}
+		while page == 1 or \
+		(r.status_code >= 200 and r.status_code < 300) and \
+		int(r.headers['X-Per-Page']) * page <= int(r.headers['X-Total']):
+			params['page'] = str(page)
+			r = self.get("/v2/users/" + login + "/quests_users", headers=headers, params=params)
+			jsObj = json.loads(r.content.decode("utf-8"))
+			for i in jsObj:
+				quests_users.append(i)
+			page += 1
+		return quests_users
+
+	def createPatronage(self, nephew, godfather):
+		if isinstance(nephew, str):
+			nephew = self.getUserId(nephew)
+		if isinstance(godfather, str):
+			godfather = self.getUserId(godfather)
+		headers = {
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + str(self.__token),
+		}
+		params = {}
+		jsObj = {
+		"patronage": {
+		"godfather_id": godfather,
+		"user_id": nephew
+			}
+		}
+		print(jsObj)
+		r = self.post("/v2/patronages/", headers=headers, params=params, json=jsObj)
+		jsObj = json.loads(r.content.decode("utf-8"))
+		return jsObj
+
+	def createCursusUser(self, user_id, cursus_id, begin_at):
+		if isinstance(user_id, str):
+			user_id = self.getUserId(user_id)
+		headers = {
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + str(self.__token),
+		}
+		params = {}
+		jsObj = {
+		"cursus_user": {
+			"user_id": user_id,
+			"begin_at": begin_at,
+			"blackholed_at": None,
+	        "cursus_id": cursus_id,
+    	    "skip_begin_validation": "true"
+			}
+		}
+		print(jsObj)
+		r = self.post("/v2/cursus_users/", headers=headers, params=params, json=jsObj)
+		jsObj = json.loads(r.content.decode("utf-8"))
+		return jsObj
+
+	def deleteQuestsUser(self, questsUserId):
+		print("Deleting Quest User: " + str(questsUserId))
+		headers = {
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + str(self.__token),
+		}
+		r = self.delete("/v2/quests_users/" + str(questsUserId), headers=headers)
+		print(r)
+
+	def deleteCursusUser(self, cursusUserId):
+		print("Deleting Quest User: " + str(cursusUserId))
+		headers = {
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + str(self.__token),
+		}
+		jsObj = {
+		"cursus_user": {
+			"begin_at": "2422-01-10T09:00:00.000Z"
+			}
+		}
+		print("Patch Begin_at")
+		r = self.patch("/v2/cursus_users/" + str(cursusUserId), headers=headers, json=jsObj)
+		print(r)
+		print("Deletion")
+		r = self.delete("/v2/cursus_users/" + str(cursusUserId), headers=headers, json=jsObj)
+		print(r)
+
+	def createQuestsUser(self, user_id, quest_id, validated_at):
+		if isinstance(user_id, str):
+			user_id = self.getUserId(user_id)
+		headers = {
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + str(self.__token),
+		}
+		params = {}
+		jsObj = {
+		"quests_user": {
+			"user_id": user_id,
+			"quest_id": quest_id,
+			"validated_at": validated_at,
+			}
+		}
+		print(jsObj)
+		r = self.post("/v2/quests_users/", headers=headers, params=params, json=jsObj)
+		jsObj = json.loads(r.content.decode("utf-8"))
+		return jsObj
