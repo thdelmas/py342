@@ -54,7 +54,6 @@ class intraAPI:
 		int(r.headers['X-Per-Page']) * page <= int(r.headers['X-Total']):
 			params['page'] = str(page)
 			r = self.get("/v2/users", headers=headers, params=params)
-			print(r)
 			jsObj = json.loads(r.content.decode("utf-8"))
 			for i in jsObj:
 				users.append(i)
