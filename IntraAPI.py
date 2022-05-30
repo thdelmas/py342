@@ -291,13 +291,23 @@ class intraAPI:
 				activeUsers.append(i)
 		return activeUsers
 
+	def getPoolUsers(self, pool_month, pool_year):
+		pool_users = []
+		print("Getting Users list pool " + str(pool_month) + " " + str(pool_year))
+		users = self.getPrimaryCampusUsers()
+		for i in users:
+			if i["pool_year"] and i["pool_month"]:
+				if i["pool_year"] == pool_year and i["pool_month"].lower() == pool_month.lower():
+					pool_users.append(i)
+		return pool_users
+
 	def getUsersKickoff(self, pool_month, pool_year):
 		ko_users = []
 		print("Getting Users list pool " + str(pool_month) + " " + str(pool_year))
 		users = self.getPrimaryCampusUsers()
 		for i in users:
 			if i["pool_year"] and i["pool_month"]:
-				if i["pool_year"] == pool_year and i["pool_month"] == pool_month.lower():
+				if i["pool_year"] == pool_year and i["pool_month"].lower() == pool_month.lower():
 					ko_users.append(i)
 		return ko_users
 
