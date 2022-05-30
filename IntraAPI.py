@@ -296,7 +296,7 @@ class intraAPI:
 		users = self.getPrimaryCampusUsers()
 		for i in users:
 			if i["pool_year"] and i["pool_month"]:
-				if i["pool_year"] == pool_year and i["pool_month"].lower() == pool_month.lower():
+				if str(i["pool_year"]) == str(pool_year) and i["pool_month"].lower() == pool_month.lower():
 					pool_users.append(i)
 		return pool_users
 
