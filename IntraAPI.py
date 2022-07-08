@@ -236,7 +236,7 @@ class intraAPI:
 			"begin_at": begin_date,
 			"end_at": end_date,
 		}
-		r = self.post("/v2/campus/journal", headers=headers, params=params, json=jsdata)
+		r = self.post("/v2/campus/"+ str(self.campus_id) +"/journal", headers=headers, params=params, json=jsdata)
 		jsObj = json.loads(r.content.decode("utf-8"))
 		for i in jsObj:
 			events.append(i)
