@@ -1,6 +1,7 @@
 import sys
 import json
 import time
+from datetime import datetime
 import requests
 from . import oauth
 
@@ -479,13 +480,44 @@ class intraAPI:
 		}
 		params = {}
 		jsObj = {
-		"quests_user": {
-			"user_id": user_id,
-			"quest_id": quest_id,
-			"validated_at": validated_at,
-			}
+			"quests_user": {
+				"user_id": user_id,
+				"quest_id": quest_id,
+				"validated_at": validated_at,
+				}
 		}
 		print(jsObj)
 		r = self.post("/v2/quests_users/", headers=headers, params=params, json=jsObj)
+		jsObj = json.loads(r.content.decode("utf-8"))
+		return jsObj
+	
+	def createUser(self, body):
+		headers = {
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + str(self.__token),
+		}
+		params = {}
+		if not body['email']:
+			print("\033[0;31mCannot Create User without email\033[0;0m")
+			return False
+		if not body['kind']:
+			body['kind'] = 'external'
+		if not body['campus_id']:
+			body['campus_id'] = self.campus_id
+		if not body['pool_year']:
+			body['pool_year'] = datetime.today().year
+		if not body['pool_month']:
+			body['pool_month'] = datetime.today().month
+		if not body['first_name']:
+			body['first_name'] = "Joy"
+		if not body['last_name']:
+			body['last_name'] = "Doe"
+		if not body['staff?']:
+			body['staff?'] = False
+		jsObj = {
+			"user": body
+		}
+		print(jsObj)
+		r = self.post("/v2/users/", headers=headers, params=params, json=jsObj)
 		jsObj = json.loads(r.content.decode("utf-8"))
 		return jsObj
