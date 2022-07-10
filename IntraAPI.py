@@ -497,22 +497,22 @@ class intraAPI:
 			'Authorization': 'Bearer ' + str(self.__token),
 		}
 		params = {}
-		if not body['email']:
+		if body.has_key('email') and not body['email']:
 			print("\033[0;31mCannot Create User without email\033[0;0m")
 			return False
-		if not body['kind']:
+		if body.has_key('kind') and not body['kind']:
 			body['kind'] = 'external'
-		if not body['campus_id']:
+		if body.has_key('campus_id') and not body['campus_id']:
 			body['campus_id'] = self.campus_id
-		if not body['pool_year']:
+		if body.has_key('pool_year') and not body['pool_year']:
 			body['pool_year'] = datetime.today().year
-		if not body['pool_month']:
+		if body.has_key('pool_month') and not body['pool_month']:
 			body['pool_month'] = datetime.today().month
-		if not body['first_name']:
+		if body.has_key('first_name') and not body['first_name']:
 			body['first_name'] = "Joy"
-		if not body['last_name']:
+		if body.has_key('last_name') and not body['last_name']:
 			body['last_name'] = "Doe"
-		if not body['staff?']:
+		if body.has_key('staff?') and not body['staff?']:
 			body['staff?'] = False
 		jsObj = {
 			"user": body
