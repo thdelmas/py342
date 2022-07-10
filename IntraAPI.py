@@ -507,7 +507,7 @@ class intraAPI:
 		if not 'pool_year' in body or not body['pool_year']:
 			body['pool_year'] = datetime.today().year
 		if not 'pool_month' in body or not body['pool_month']:
-			body['pool_month'] = datetime.today().month
+			body['pool_month'] = datetime.today().month.strftime("%B")
 		if not 'first_name' in body or not body['first_name']:
 			body['first_name'] = "Joy"
 		if not 'last_name' in body or not body['last_name']:
