@@ -500,19 +500,19 @@ class intraAPI:
 		if 'email' in body and not body['email']:
 			print("\033[0;31mCannot Create User without email\033[0;0m")
 			return False
-		if 'kind' in body and not body['kind']:
+		if not 'kind' in body or not body['kind']:
 			body['kind'] = 'external'
-		if 'campus_id' in body and not body['campus_id']:
+		if not 'campus_id' in body or not body['campus_id']:
 			body['campus_id'] = self.campus_id
-		if 'pool_year' in body and not body['pool_year']:
+		if not 'pool_year' in body or not body['pool_year']:
 			body['pool_year'] = datetime.today().year
-		if 'pool_month' in body and not body['pool_month']:
+		if not 'pool_month' in body or not body['pool_month']:
 			body['pool_month'] = datetime.today().month
-		if 'first_name' in body and not body['first_name']:
+		if not 'first_name' in body or not body['first_name']:
 			body['first_name'] = "Joy"
-		if 'last_name' in body and not body['last_name']:
+		if not 'last_name' in body or not body['last_name']:
 			body['last_name'] = "Doe"
-		if 'staff?' in body and not body['staff?']:
+		if not 'staff?' in body or not body['staff?']:
 			body['staff?'] = False
 		jsObj = {
 			"user": body
