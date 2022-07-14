@@ -526,3 +526,23 @@ class intraAPI:
 		r = self.post("/v2/users/", headers=headers, params=params, json=jsObj)
 		jsObj = json.loads(r.content.decode("utf-8"))
 		return jsObj
+
+	def getCampusEvents(self):
+		events = []
+		jsObj = None
+		page = 1
+		headers = {
+			'Accept': 'application/json',
+			'Authorization': 'Bearer ' + str(self.__token),
+		}
+		params = {}
+		while page == 1 or \
+		(r.status_code >= 200 and r.status_code < 300) and \
+		int(r.headers['X-Per-Page']) * page <= int(r.headers['X-Total']):
+			params['page'] = str(page)
+			r = self.get("/v2/campus/" + self.campus_id + "/events", headers=headers, params=params)
+			jsObj = json.loads(r.content.decode("utf-8"))
+			for i in jsObj:
+				events.append(i)
+			page += 1
+		return events
