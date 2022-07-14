@@ -1,7 +1,6 @@
 import sys
 import json
 import time
-import unidecode
 from datetime import datetime
 import requests
 from . import oauth
@@ -512,11 +511,11 @@ class intraAPI:
 		if not 'first_name' in body or not body['first_name']:
 			body['first_name'] = "Joy"
 		else:
-			body['first_name'] = unidecode.unidecode(body['first_name'])
+			body['first_name'] = str(body['first_name'])
 		if not 'last_name' in body or not body['last_name']:
 			body['last_name'] = "Doe"
 		else:
-			body['last_name'] = unidecode.unidecode(body['last_name'])
+			body['last_name'] = str(body['last_name'])
 		if not 'staff?' in body or not body['staff?']:
 			body['staff?'] = False
 		jsObj = {
