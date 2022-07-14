@@ -539,7 +539,7 @@ class intraAPI:
 		(r.status_code >= 200 and r.status_code < 300) and \
 		int(r.headers['X-Per-Page']) * page <= int(r.headers['X-Total']):
 			params['page'] = str(page)
-			r = self.get("/v2/campus/" + self.campus_id + "/events", headers=headers, params=params)
+			r = self.get("/v2/campus/" + str(self.campus_id) + "/events", headers=headers, params=params)
 			jsObj = json.loads(r.content.decode("utf-8"))
 			for i in jsObj:
 				events.append(i)
